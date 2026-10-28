@@ -32,7 +32,12 @@ For automated checks, Playwright and Chromium are available in the cloud contain
 - **Events are delegated** on `#board`: clicks use `data-action` attributes handled in `handleBoardClick()`. Native HTML5 drag and drop (`wireDragAndDrop()`) also listens on `#board`, uses the `is-drop-target` class for the column highlight and calls `moveTask()` on drop. Escape closes an open card panel (`handleKeydown()`).
 - **Add Task flow** (`handleSubmit()`): `readForm()`, then `validateTask()`, then `showFieldErrors()`. On success it is optimistic: `addTask()` renders the card right away, the form resets, a success toast shows, and only then `notifyNewTask()` runs with the submit button in the "Sending…" state. On failure the card stays and a warning toast shows.
 - **Dates** are local `YYYY-MM-DD` strings compared as text (`todayISO()`, `toISODate()`); avoid `toISOString()` for dates, as it shifts to UTC. Seed due dates use `daysFromToday()` so the overdue examples stay overdue. A task is overdue when its due date is before today and its status is not Done.
+- **Chatbot widget (Chattie)**: a floating button at the bottom right (`wireChatWidget()`). Clicking it opens a small panel and speaks `CHAT_GREETING` with the browser's built-in `speechSynthesis` (no network call). The panel links to WhatsApp support via `https://wa.me/${WHATSAPP_NUMBER}`; this is a plain link, not a fetch. Escape closes the panel. The toast region sits above the launcher so they do not overlap.
 - **Filters** (project, assignee text contains, priority) are applied in `applyFilters()` at render time. Column badges show `shown/total` while a filter is active; the header summary always counts all tasks.
+
+## Claude Code hooks
+
+`.claude/settings.json` registers a SessionStart hook, `.claude/hooks/session-start.sh`, which prints a short reminder of the hard constraints at the start of each session.
 
 ## Layout and accessibility conventions
 
