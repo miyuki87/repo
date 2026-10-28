@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A demo/training IT PMO Kanban board for a fictitious bank. The whole app is one file, `index.html`, with a `<style>` block and a `<script>` block. Do not use any real bank's logo or branding; the header uses a plain "IT PMO" text wordmark and a corporate blue palette.
 
+`v2/index.html` is a forest-themed redesign of the same board (v1 stays at `index.html`). It keeps the same script and HTML ids, adds a dark theme, a 4/2/1 column layout for desktop/tablet/phone and a background image embedded as a base64 `data:` URI in the `--photo` token. The same hard constraints apply to it. When the script changes, apply the change to both files.
+
 ## Hard constraints (keep these when changing anything)
 
 - Vanilla HTML, CSS and JavaScript only. No frameworks, libraries, npm, bundler or build step.
