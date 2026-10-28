@@ -24,7 +24,7 @@ For automated checks, Playwright and Chromium are available in the cloud contain
 
 ## Script architecture
 
-- **Config at the top of the script:** `FORMSUBMIT_ENDPOINT`, `ID_PREFIX` (`UOB-ITPM-`) and `TOAST_MS`. The HTML comment above `<script>` explains FormSubmit's one-time activation email. While the endpoint still contains `YOUR_EMAIL@example.com`, `notifyNewTask()` throws before sending anything, which produces the warning toast.
+- **Config at the top of the script:** `FORMSUBMIT_ENDPOINT`, `ID_PREFIX` (`UOB-ITPM-`), `TOAST_MS` and `MEETING_ALERT_MS` (delay before the meeting reminder dialog, `#meeting-dialog`, opens once per page load; it is set up in `init()`). The HTML comment above `<script>` explains FormSubmit's one-time activation email. While the endpoint still contains `YOUR_EMAIL@example.com`, `notifyNewTask()` throws before sending anything, which produces the warning toast.
 - **Reference data:** `COLUMNS` (status and description), `PROJECTS`, `CATEGORIES` and `PRIORITIES` drive the columns, the form selects and the filter selects. The selects are filled by `fillSelect()` in `init()`, so add new options to these arrays, not to the HTML.
 - **State:** a single `state = { tasks, filters, ui }` object is the source of truth. `ui` holds which card has its Move panel (`moveOpenId`) or delete confirm (`confirmDeleteId`) open, plus the `sending` flag. `nextIdNumber` is the counter for zero-padded task IDs.
 - **Rendering:** `renderBoard()` rebuilds all four columns from state on every change and calls `renderSummary()`. `renderCard()` returns an HTML string. Do not change card contents directly in the DOM; update state and re-render. Every user-supplied value must go through `escapeHtml()` before it goes into HTML.

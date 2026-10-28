@@ -407,6 +407,12 @@
     margin-top: var(--space-5);
   }
 
+  /* Meeting reminder modal (shown once, MEETING_ALERT_MS after load) */
+  dialog.modal-small { width: min(420px, calc(100% - 32px)); }
+  .modal-body { padding: var(--space-4) var(--space-5) var(--space-5); }
+  .modal-body p { margin: 0; line-height: 1.5; }
+  .modal-body .form-actions { margin-top: var(--space-4); }
+
   /* ============================================================
      Toasts
      ============================================================ */
@@ -581,6 +587,22 @@
   </form>
 </dialog>
 
+<!-- ============================================================
+     Meeting reminder modal
+     ============================================================ -->
+<dialog class="modal modal-small" id="meeting-dialog" aria-labelledby="meeting-title" aria-describedby="meeting-text">
+  <div class="modal-head">
+    <h2 id="meeting-title">IT Project Meeting</h2>
+    <button type="button" class="icon-btn" id="close-meeting" aria-label="Close meeting reminder">×</button>
+  </div>
+  <div class="modal-body">
+    <p id="meeting-text">Reminder: there is an IT project meeting <strong>next Wednesday at 10:00 AM</strong> in <strong>Room 888</strong>.</p>
+    <div class="form-actions">
+      <button type="button" class="btn btn-primary" id="ack-meeting" autofocus>OK, got it</button>
+    </div>
+  </div>
+</dialog>
+
 <!-- Toast region: announced politely to screen readers -->
 <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="false"></div>
 
@@ -598,6 +620,7 @@
 const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/YOUR_EMAIL@example.com";
 const ID_PREFIX = "UOB-ITPM-";
 const TOAST_MS = 4500;
+const MEETING_ALERT_MS = 10000; // show the meeting reminder after this long on the page
 
 /* ============================================================
    Reference data
@@ -1204,6 +1227,13 @@ function init() {
   document.getElementById("add-task-dialog").addEventListener("close", () => {
     document.getElementById("open-add-task").focus();
   });
+
+  const meetingDialog = document.getElementById("meeting-dialog");
+  const closeMeeting = () => meetingDialog.close();
+  document.getElementById("close-meeting").addEventListener("click", closeMeeting);
+  document.getElementById("ack-meeting").addEventListener("click", closeMeeting);
+  // Once per page load; a refresh shows it again since nothing is stored
+  setTimeout(() => meetingDialog.showModal(), MEETING_ALERT_MS);
 
   seedTasks();
   renderBoard();
